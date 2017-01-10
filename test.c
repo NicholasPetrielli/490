@@ -1,5 +1,5 @@
 #include <pocketsphinx.h>
-
+#include <time.h>
 int
 main(int argc, char *argv[])
 {
@@ -10,7 +10,9 @@ main(int argc, char *argv[])
     int16 buf[512];
     int rv;
     int32 score;
-
+    int16* bufWrite[512];
+    int32* sizeWrite;
+ //   *sizeWrite = 2;
     config = cmd_ln_init(NULL, ps_args(), TRUE,
                  "-hmm", MODELDIR "/en-us/en-us",
                  "-lm", MODELDIR "/en-us/en-us.lm.bin",
@@ -27,6 +29,24 @@ main(int argc, char *argv[])
         return -1;
     }
 
+    
+    clock_t start = clock();
+    clock_t endTime = clock();
+    printf("say something now \n");
+    rv = ps_start_utt(ps);
+    ps_get_rawdata(ps,bufWrite,sizeWrite);
+    while((double)(endTime-start)/CLOCKS_PER_SEC < 5){
+    endTime = clock();
+    }
+    rv = ps_end_utt(ps);
+    
+    fh = fopen("output.raw", "w");
+    int i = 0;
+    while(i < 500){
+    fputc(buf[i],fh);
+    i++;
+    }
+    fclose(fh);
     fh = fopen("output.raw", "rb");
     if (fh == NULL) {
         fprintf(stderr, "Unable to open input file goforward.raw\n");
@@ -38,7 +58,7 @@ main(int argc, char *argv[])
     while (!feof(fh)) {
         size_t nsamp;
         nsamp = fread(buf, 2, 512, fh);
-        rv = ps_process_raw(ps, buf, nsamp, FALSE, FALSE);
+	rv = ps_process_raw(ps, buf, nsamp, FALSE, FALSE);
     }
     
     rv = ps_end_utt(ps);
