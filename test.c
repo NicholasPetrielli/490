@@ -1,7 +1,7 @@
 #include <pocketsphinx.h>
 #include <time.h>
 
-char* play_gofoward()
+char const* play_goforward()
 {
 	ps_decoder_t *ps;
     cmd_ln_t *config;
@@ -10,7 +10,7 @@ char* play_gofoward()
     int16 buf[512];
     int rv;
     int32 score;
-
+    char *temp;
     config = cmd_ln_init(NULL, ps_args(), TRUE,
                  "-hmm", MODELDIR "/en-us/en-us",
                  "-lm", MODELDIR "/en-us/en-us.lm.bin",
@@ -18,19 +18,19 @@ char* play_gofoward()
                  NULL);
     if (config == NULL) {
         fprintf(stderr, "Failed to create config object, see log for details\n");
-        return -1;
+        return;
     }
     
     ps = ps_init(config);
     if (ps == NULL) {
         fprintf(stderr, "Failed to create recognizer, see log for details\n");
-        return -1;
+        return;
     }
 
     fh = fopen("goforward.raw", "rb");
     if (fh == NULL) {
         fprintf(stderr, "Unable to open input file goforward.raw\n");
-        return -1;
+        return;
     }
 
     rv = ps_start_utt(ps);
@@ -44,12 +44,12 @@ char* play_gofoward()
     rv = ps_end_utt(ps);
     hyp = ps_get_hyp(ps, &score);
     printf("Recognized: %s\n", hyp);
-
     fclose(fh);
+    return hyp;
     ps_free(ps);
     cmd_ln_free_r(config);
-	
-	return hyp;
+    printf("still: %s\n",temp);
+    return hyp;
 }
 
 void try_to_record(){
@@ -69,13 +69,13 @@ void try_to_record(){
                  NULL);
     if (config == NULL) {
         fprintf(stderr, "Failed to create config object, see log for details\n");
-        return -1;
+        return;
     }
     
     ps = ps_init(config);
     if (ps == NULL) {
         fprintf(stderr, "Failed to create recognizer, see log for details\n");
-        return -1;
+        return;
     }
 
     
@@ -99,7 +99,7 @@ void try_to_record(){
     fh = fopen("output.raw", "rb");
     if (fh == NULL) {
         fprintf(stderr, "Unable to open input file goforward.raw\n");
-        return -1;
+        return;
     }
 
     rv = ps_start_utt(ps);
@@ -119,9 +119,22 @@ void try_to_record(){
     cmd_ln_free_r(config);
 }
 
-int
-main(int argc, char *argv[])
+void check_command(char *words){
+    size_t len = strlen(words);
+    printf("%d\n", len);
+    int i = 0;
+   while(i < (int) len){
+	printf("%c\n", words[i]);
+   i++;
+   }
+
+
+}
+
+int main(int argc, char *argv[])
 {
-    printf("Returned: %s\n", play_gofoward());
+    char *words = play_goforward();
+    check_command(words);
+    printf("Returned: %s\n", words);
     return 0;
 }
