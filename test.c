@@ -172,9 +172,9 @@ char const* try_to_record(){
 }
 
 //From continous.c (pocketsphinx default files)
-void check_command(char *words){
+void check_command(const char *words){
     size_t len = strlen(words);
-    printf("%d\n", len);
+    printf("%d\n", (int)len);
     int i = 0;
    while(i < (int) len){
 	printf("%c\n", words[i]);
@@ -260,8 +260,8 @@ int main(int argc, char *argv[])
         return 1;
     }
     recognize_from_microphone();
-    char *words = try_to_record();
-    check_command(words);
-    printf("Returned: %s\n", words);
+//    char *words = try_to_record();
+  //  check_command(words);
+  //  printf("Returned: %s\n", words);
     return 0;
 }
