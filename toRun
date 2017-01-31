@@ -1,1 +1,5 @@
 pocketsphinx_continuous -inmic yes -adcdev plughw:0
+
+
+./test -inmic yes -adcdev plughw:0 -hmm ../cmusphinx-en-us-8khz-5.2/ -lm ../modelStuff/en-us.lm.bin -dict ../modelStuff/cmudict-en-us.dict 
+

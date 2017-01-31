@@ -27,7 +27,7 @@ static const arg_t cont_args_def[] = {
      "Audio file to transcribe."},
     {"-inmic",
      ARG_BOOLEAN,
-     "no",
+     "yes",
      "Transcribe audio from microphone."},
     {"-time",
      ARG_BOOLEAN,
@@ -173,13 +173,36 @@ char const* try_to_record(){
 
 //From continous.c (pocketsphinx default files)
 void check_command(const char *words){
-    size_t len = strlen(words);
-    printf("%d\n", (int)len);
-    int i = 0;
-   while(i < (int) len){
-	printf("%c\n", words[i]);
-   i++;
-   }
+	char s[256];
+	char* timeVar = "time";
+	char* weatherVar = "weather";
+	char* sportVar = "sport";
+	char* sportsVar = "sport's";
+	char* alarmVar = "alarm";
+	strcpy(s, words); //tokenizer doens't work with const char
+	char* token = strtok(s, " "); //divide the words up by spaces
+	while (token) {
+		printf("token: %s\n", token);
+		if (strcmp(token,timeVar) == 0){
+			printf("Do time stuff\n");
+		} else if(strcmp(token,weatherVar) == 0){
+			printf("Do weather stuff\n");
+		} else if (strcmp(token,sportVar) == 0  || strcmp(token,sportsVar) == 0){
+			printf("Do sport stuff\n");
+		} else if (strcmp(token,alarmVar) == 0){
+			printf("Do alarm stuff\n");
+		} else{
+			//do nothing
+		}
+		token = strtok(NULL, " ");
+	}
+//    size_t len = strlen(words);
+//    printf("%d\n", (int)len);
+//    int i = 0;
+//  while(i < (int) len){
+//	printf("%c\n", words[i]);
+//	i++;
+//   }
 
 
 }
@@ -220,7 +243,7 @@ recognize_from_microphone()
             hyp = ps_get_hyp(ps, NULL );
             if (hyp != NULL) {
                 printf("%s\n", hyp);
-		check_command(hyp);
+				check_command(hyp);
                 fflush(stdout);
             }
 
