@@ -1,0 +1,5 @@
+eSpeak, sudo apt-get install eSpeak, text to speech program, can be ran through terminal using 'espeak -f"textfile"'
+or 'espeak "words"' .... eSpeak is using their libraries and a dependancy, speak is a standalone version.. doesn't matter which is used.
+
+
+in c  "system('enter linux command here'); to use the terminal
