@@ -184,6 +184,7 @@ void check_command(const char *words){
 	while (token) {
 		printf("token: %s\n", token);
 		if (strcmp(token,timeVar) == 0){
+			system("espeak date '+%A %W %Y %X'");
 			printf("Do time stuff\n");
 		} else if(strcmp(token,weatherVar) == 0){
 			printf("Do weather stuff\n");
