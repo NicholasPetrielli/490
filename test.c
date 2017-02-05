@@ -184,7 +184,8 @@ void check_command(const char *words){
 	while (token) {
 		printf("token: %s\n", token);
 		if (strcmp(token,timeVar) == 0){
-			system("espeak date '+%A %W %Y %X'");
+			system("date '+%A %r' > date.txt");
+			system("espeak -f date.txt -s 135 2>/dev/null");
 			printf("Do time stuff\n");
 		} else if(strcmp(token,weatherVar) == 0){
 			printf("Do weather stuff\n");
@@ -192,7 +193,12 @@ void check_command(const char *words){
 			printf("Do sport stuff\n");
 		} else if (strcmp(token,alarmVar) == 0){
 			printf("Do alarm stuff\n");
-		} else{
+		} else if (strcmp(token, "hello") == 0){
+			system("espeak 'hello' -s 135 2>/dev/null");
+		} else if (strcmp(token, "name") == 0){
+			system("espeak 'Sleepful personal sleeping assistant' -s 135 2>/dev/null");
+		}
+		else{
 			//do nothing
 		}
 		token = strtok(NULL, " ");
@@ -228,7 +234,7 @@ recognize_from_microphone()
         E_FATAL("Failed to start utterance\n");
     utt_started = FALSE;
     E_INFO("Ready....\n");
-
+    system("espeak 'Ready to take commands' -s 135 2>/dev/null");
     for (;;) {
         if ((k = ad_read(ad, adbuf, 2048)) < 0)
             E_FATAL("Failed to read audio\n");
@@ -252,6 +258,7 @@ recognize_from_microphone()
                 E_FATAL("Failed to start utterance\n");
             utt_started = FALSE;
             E_INFO("Ready....\n");
+	   system("espeak 'Ready to take a command' -s 135 2>/dev/null");
         }
         sleep_msec(100);
     }
@@ -262,8 +269,9 @@ int main(int argc, char *argv[])
 { 
 	//the following sets up the api to be of use for a microphone, the program will crash if you attempt to run this without using the '-inmic yes'
     	//command option, also use '-adcdev plughw:0' on the raspberry pi to select the proper device.
+    system("espeak 'Hello I am just getting ready' -s 135 2>/dev/null"); //greeting the user
     char const *cfg;
-
+    ps_free(ps);
     config = cmd_ln_parse_r(NULL, cont_args_def, argc, argv, TRUE);
 
     /* Handle argument file as -argfile. */
