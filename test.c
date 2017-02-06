@@ -102,6 +102,7 @@ void getWeather(){
                 }
         }
         fclose(fp);
+	system("rm file2.txt");
 }
 
 char const* play_goforward()
