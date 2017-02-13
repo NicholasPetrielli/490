@@ -233,39 +233,53 @@ void check_command(const char *words){
 	char* alarmVar = "alarm";
 	strcpy(s, words); //tokenizer doens't work with const char
 	char* token = strtok(s, " "); //divide the words up by spaces
+	char* temptoken;
+	int recognizedCommand = 0;
 	while (token) {
 		printf("token: %s\n", token);
 		if (strcmp(token,timeVar) == 0){
 			system("date '+%A %r' > date.txt");
 			system("espeak -f date.txt -s 135 2>/dev/null");
 			printf("Do time stuff\n");
+			recognizedCommand = 1;
 		} else if(strcmp(token,weatherVar) == 0){
 			getWeather();
 			system("espeak -f weather.txt -s 135 2>/dev/null");
 			printf("Do weather stuff\n");
+			recognizedCommand = 1;
 		} else if (strcmp(token,sportVar) == 0  || strcmp(token,sportsVar) == 0){
-			printf("Do sport stuff\n");
+			//printf("Do sport stuff\n");
+			//recognizedCommand = 1;
 		} else if (strcmp(token,alarmVar) == 0){
-			printf("Do alarm stuff\n");
+			//printf("Do alarm stuff\n");
+			//recognizedCommand = 1;
 		} else if (strcmp(token, "hello") == 0){
-			system("espeak 'hello' -s 135 2>/dev/null");
+			system("espeak 'Hello.' -s 135 2>/dev/null");
+			recognizedCommand = 1;
 		} else if (strcmp(token, "name") == 0){
 			system("espeak 'Sleepful personal sleeping assistant' -s 135 2>/dev/null");
+			recognizedCommand = 1;
+		} else if (strcmp(token, "hi") == 0){
+			system("espeak 'Hi.' -s 135 2>/dev/null");
+			recognizedCommand = 1;
+		} else if (strcmp(token, "hey") == 0){
+			system("espeak 'Hey.' -s 135 2>/dev/null");
+			recognizedCommand = 1;
+		} else if (strcmp(token, "good") == 0){
+			temptoken = strtok(NULL, " ");
+			if ( strcmp(temptoken, "morning") == 0){
+				system("espeak 'Good morning.' -s 135 2>/dev/null");
+				recognizedCommand = 1;
+			}
 		}
 		else{
 			//do nothing
 		}
 		token = strtok(NULL, " ");
 	}
-//    size_t len = strlen(words);
-//    printf("%d\n", (int)len);
-//    int i = 0;
-//  while(i < (int) len){
-//	printf("%c\n", words[i]);
-//	i++;
-//   }
-
-
+	if (recognizedCommand == 1){
+		system("espeak 'No commands recognized.' -s 135 2>/dev/null");
+	}
 }
 //From continuous.c
 static void
