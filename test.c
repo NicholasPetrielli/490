@@ -118,6 +118,19 @@ fclose(fp);
 
 }
 
+void getAlarmTime(){
+        FILE *fp = fopen("time.txt","r");
+        if (fp == NULL){
+                //do nothing
+        } else {
+                system("espeak 'Your alarm is set to:' -s 135 2>/dev/null");
+                system("espeak -f time.txt -s 135 2>/dev/null");
+                system("rm time.txt");
+        }
+fclose(fp);
+
+}
+
 char const* play_goforward()
 {
 	ps_decoder_t *ps;
