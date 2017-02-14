@@ -105,6 +105,19 @@ void getWeather(){
 	system("rm file2.txt");
 }
 
+void getMemo(){
+	FILE *fp = fopen("memo.txt","r");
+	if (fp == NULL){
+		//do nothing
+	} else {
+		system("espeak 'You left the following memo' -s 135 2>/dev/null");
+		system("espeak -f memo.txt -s 135 2>/dev/null");
+		system("rm memo.txt");
+	}
+fclose(fp);
+
+}
+
 char const* play_goforward()
 {
 	ps_decoder_t *ps;
@@ -324,6 +337,7 @@ int main(int argc, char *argv[])
 	//the following sets up the api to be of use for a microphone, the program will crash if you attempt to run this without using the '-inmic yes'
     	//command option, also use '-adcdev plughw:0' on the raspberry pi to select the proper device.
     system("espeak 'Hello I am just getting ready' -s 135 2>/dev/null"); //greeting the user
+    getMemo();
     char const *cfg;
     ps_free(ps);
     config = cmd_ln_parse_r(NULL, cont_args_def, argc, argv, TRUE);
