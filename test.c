@@ -261,41 +261,51 @@ void check_command(const char *words){
 	char* token = strtok(s, " "); //divide the words up by spaces
 	char* temptoken;
 	int recognizedCommand = 0;
+	int doneCommand[9] = {0,0,0,0,0,0,0,0,0};
 	while (token) {
 	 printf("token: %s\n", token);
-		if (strcmp(token,timeVar) == 0){
+		if (strcmp(token,timeVar) == 0 && doneCommand[0] == 0){
 		 system("date '+%A %r' > date.txt");
 	         system("espeak -f date.txt -s 135 2>/dev/null");
 		 //printf("Do time stuff\n");
 		 recognizedCommand = 1;
-		} else if(strcmp(token,weatherVar) == 0){
+		 doneCommand[0] = 1;
+		} else if(strcmp(token,weatherVar) == 0 && doneCommand[1] == 0){
 		 getWeather();
 		 system("espeak -f weather.txt -s 135 2>/dev/null");
 		 //printf("Do weather stuff\n");
 		 recognizedCommand = 1;
-		} else if (strcmp(token,sportVar) == 0  || strcmp(token,sportsVar) == 0){
+		 doneCommand[1] = 1;
+		} else if ((strcmp(token,sportVar) == 0  || strcmp(token,sportsVar) == 0) && doneCommand[2] == 0){
 		//printf("Do sport stuff\n");
 		//recognizedCommand = 1;
-		} else if (strcmp(token,alarmVar) == 0){
+		 doneCommand[2] = 1;
+		} else if (strcmp(token,alarmVar) == 0 && doneCommand[3] == 0){
 		//printf("Do alarm stuff\n");
 		//recognizedCommand = 1;
-		} else if (strcmp(token, "hello") == 0){
+		 doneCommand[3] = 1;
+		} else if (strcmp(token, "hello") == 0 && doneCommand[4] == 0){
 		 system("espeak 'Hello.' -s 135 2>/dev/null");
 		 recognizedCommand = 1;
-		} else if (strcmp(token, "name") == 0){
+		 doneCommand[4] = 1;
+		} else if (strcmp(token, "name") == 0 && doneCommand[5] == 0){
 		 system("espeak 'Sleepful personal sleeping assistant' -s 135 2>/dev/null");
 		 recognizedCommand = 1;
-		} else if (strcmp(token, "hi") == 0){
+		 doneCommand[5] = 1;
+		} else if (strcmp(token, "hi") == 0 && doneCommand[6] == 0){
 		 system("espeak 'Hi.' -s 135 2>/dev/null");
 		 recognizedCommand = 1;
-		} else if (strcmp(token, "hey") == 0){
+		 doneCommand[6] = 1;
+		} else if (strcmp(token, "hey") == 0 && doneCommand[7] == 0){
 		 system("espeak 'Hey.' -s 135 2>/dev/null");
 		 recognizedCommand = 1;
-		} else if (strcmp(token, "good") == 0){
+		 doneCommand[7] = 1;
+		} else if (strcmp(token, "good") == 0 && doneCommand[8] == 0){
 		temptoken = strtok(NULL, " ");
 			if ( strcmp(temptoken, "morning") == 0){
 			 system("espeak 'Good morning.' -s 135 2>/dev/null");
 			 recognizedCommand = 1;
+			 doneCommand[8] = 1;
 			}
 	}
 	else{
