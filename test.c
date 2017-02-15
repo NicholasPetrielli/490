@@ -282,7 +282,8 @@ void check_command(const char *words){
 		 doneCommand[2] = 1;
 		} else if (strcmp(token,alarmVar) == 0 && doneCommand[3] == 0){
 		//printf("Do alarm stuff\n");
-		//recognizedCommand = 1;
+		system("espeak -f alarm.txt -s 135 2>/dev/null");
+		 recognizedCommand = 1;
 		 doneCommand[3] = 1;
 		} else if (strcmp(token, "hello") == 0 && doneCommand[4] == 0){
 		 system("espeak 'Hello.' -s 135 2>/dev/null");
