@@ -113,8 +113,8 @@ void getMemo(){
 		system("espeak 'You left the following memo' -s 135 2>/dev/null");
 		system("espeak -f memo.txt -s 135 2>/dev/null");
 		system("rm memo.txt");
+		fclose(fp);
 	}
-fclose(fp);
 
 }
 
@@ -139,12 +139,17 @@ void check_command(const char *words){
 	char* sportsVar = "sport's";
 	char* alarmVar = "alarm";
 	strcpy(s, words); //tokenizer doens't work with const char
+	int i = 0;
+	while(i < 256){
+		s[i] = tolower(s[i]);
+		i++;
+	}
 	char* token = strtok(s, " "); //divide the words up by spaces
-	char* temptoken = token;
+	//char* temptoken = token;
 	int recognizedCommand = 0;
 	int doneCommand[13] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
 	while (token) {
-	 printf("token: %s\n", token);
+	 printf("token:%s\n", token);
 		if (strcmp(token,timeVar) == 0 && doneCommand[0] == 0){
 		 system("date '+%A %r' > date.txt");
 	         system("espeak -f date.txt -s 135 2>/dev/null");
@@ -163,7 +168,7 @@ void check_command(const char *words){
 		 doneCommand[2] = 1;
 		} else if (strcmp(token,alarmVar) == 0 && doneCommand[3] == 0){
 		//printf("Do alarm stuff\n");
-		system("espeak -f alarm.txt -s 135 2>/dev/null");
+		//system("espeak -f alarm.txt -s 135 2>/dev/null");
 		 recognizedCommand = 1;
 		 doneCommand[3] = 1;
 		} else if (strcmp(token, "hello") == 0 && doneCommand[4] == 0){
@@ -183,35 +188,36 @@ void check_command(const char *words){
 		 recognizedCommand = 1;
 		 doneCommand[7] = 1;
 		} else if (strcmp(token, "good") == 0 && doneCommand[8] == 0){
-		temptoken = strtok(NULL, " ");
-			if ( strcmp(temptoken, "morning") == 0){
+		token = strtok(NULL, " ");
+			if ( strcmp(token, "morning") == 0){
 			 system("espeak 'Good morning.' -s 135 2>/dev/null");
 			 recognizedCommand = 1;
 			 doneCommand[8] = 1;
 			}
 		} else if (strcmp(token, "hockey") == 0 && doneCommand[9] == 0){
-		temptoken = strtok(NULL, " ");
-			if ( strcmp(temptoken, "score") == 0 || strcmp(temptoken, "scores") == 0){
-                         system("espeak -f'nhlScore.' -s 135 2>/dev/null");
+		token = strtok(NULL, " ");
+			if ( strcmp(token, "score") == 0 || strcmp(token, "scores") == 0){
+                         system("espeak -f'nhlScore' -s 135 2>/dev/null");
                          recognizedCommand = 1;
                          doneCommand[9] = 1;
+			printf("hi");
                         }
 		} else if (strcmp(token, "basketball") == 0 && doneCommand[10] == 0){
-                temptoken = strtok(NULL, " ");
-                        if ( strcmp(temptoken, "score") == 0 || strcmp(temptoken, "scores") == 0){
-                         system("espeak -f'nbaScore.' -s 135 2>/dev/null");
+                token = strtok(NULL, " ");
+                        if ( strcmp(token, "score") == 0 || strcmp(token, "scores") == 0){
+                         system("espeak -f'nbaScore' -s 135 2>/dev/null");
                          recognizedCommand = 1;
                          doneCommand[10] = 1;
                         }
                 } else if (strcmp(token, "football") == 0 && doneCommand[11] == 0){
-                temptoken = strtok(NULL, " ");
-                        if ( strcmp(temptoken, "score") == 0 || strcmp(temptoken, "scores") == 0){
-                         system("espeak -f'nflScore.' -s 135 2>/dev/null");
+                token = strtok(NULL, " ");
+                        if ( strcmp(token, "score") == 0 || strcmp(token, "scores") == 0){
+                         system("espeak -f'nflScore' -s 135 2>/dev/null");
                          recognizedCommand = 1;
                          doneCommand[11] = 1;
                         }
                 } else if (strcmp(token, "news") == 0 && doneCommand[12] == 0){
-		 system("espeak -f 'news.txt' -s 135 2>/dev/null");
+		 system("espeak -f 'news.txt' -s 110 2>/dev/null");
 		 recognizedCommand = 1;
 		 doneCommand[12] = 1;
 		}
@@ -264,7 +270,7 @@ recognize_from_microphone()
             hyp = ps_get_hyp(ps, NULL );
             if (hyp != NULL) {
                 printf("%s\n", hyp);
-				check_command(hyp);
+		check_command(hyp);
                 fflush(stdout);
             }
 
@@ -284,6 +290,7 @@ int main(int argc, char *argv[])
 	//the following sets up the api to be of use for a microphone, the program will crash if you attempt to run this without using the '-inmic yes'
     	//command option, also use '-adcdev plughw:0' on the raspberry pi to select the proper device.
     system("espeak 'Hello I am just getting ready' -s 135 2>/dev/null"); //greeting the user
+    system("python apiCalls.py 2>/dev/null");
     getMemo();
     char const *cfg;
     ps_free(ps);
