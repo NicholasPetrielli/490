@@ -261,7 +261,7 @@ void check_command(const char *words){
 	char* token = strtok(s, " "); //divide the words up by spaces
 	char* temptoken;
 	int recognizedCommand = 0;
-	int doneCommand[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+	int doneCommand[13] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
 	while (token) {
 	 printf("token: %s\n", token);
 		if (strcmp(token,timeVar) == 0 && doneCommand[0] == 0){
@@ -328,7 +328,11 @@ void check_command(const char *words){
                          recognizedCommand = 1;
                          doneCommand[11] = 1;
                         }
-                }
+                } else if (strcmp(token, "news") == 0 && doneCommand[12] == 0){
+		 system("espeak -f 'news.txt' -s 135 2>/dev/null");
+		 recognizedCommand = 1;
+		 doneCommand[12] = 1;
+		}
 		else{
 		//do nothing
 		}
