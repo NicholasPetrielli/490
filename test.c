@@ -261,7 +261,7 @@ void check_command(const char *words){
 	char* token = strtok(s, " "); //divide the words up by spaces
 	char* temptoken;
 	int recognizedCommand = 0;
-	int doneCommand[9] = {0,0,0,0,0,0,0,0,0};
+	int doneCommand[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 	while (token) {
 	 printf("token: %s\n", token);
 		if (strcmp(token,timeVar) == 0 && doneCommand[0] == 0){
@@ -307,10 +307,31 @@ void check_command(const char *words){
 			 recognizedCommand = 1;
 			 doneCommand[8] = 1;
 			}
-	}
-	else{
-	//do nothing
-	}
+		} else if (strcmp(token, "hockey") == 0 && doneCommand[9] == 0){
+		temptoken = strtok(NULL, " ");
+			if ( strcmp(temptoken, "score") == 0 || strcmp(temptoken, "scores" == 0)){
+                         system("espeak -f'nhlScore.' -s 135 2>/dev/null");
+                         recognizedCommand = 1;
+                         doneCommand[9] = 1;
+                        }
+		} else if (strcmp(token, "basketball") == 0 && doneCommand[10] == 0){
+                temptoken = strtok(NULL, " ");
+                        if ( strcmp(temptoken, "score") == 0 || strcmp(temptoken, "scores" == 0)){
+                         system("espeak -f'nbaScore.' -s 135 2>/dev/null");
+                         recognizedCommand = 1;
+                         doneCommand[10] = 1;
+                        }
+                } else if (strcmp(token, "football") == 0 && doneCommand[11] == 0){
+                temptoken = strtok(NULL, " ");
+                        if ( strcmp(temptoken, "score") == 0 || strcmp(temptoken, "scores" == 0)){
+                         system("espeak -f'nflScore.' -s 135 2>/dev/null");
+                         recognizedCommand = 1;
+                         doneCommand[11] = 1;
+                        }
+                }
+		else{
+		//do nothing
+		}
 	 token = strtok(NULL, " ");
 	}
 	if (recognizedCommand == 1){
